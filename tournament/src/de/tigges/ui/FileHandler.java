@@ -46,7 +46,7 @@ public class FileHandler<T> {
 
 	/**
 	 * <li>show a dialog to let the user select a file
-	 * <li>load th file from the filesystem
+	 * <li>load the file from the filesystem
 	 * <li>convert the content of the file into a java object using JAXB technology
 	 * <li>set the loaded filename as preference 
 	 * @return
