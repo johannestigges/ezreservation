@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.0.0" method="upgrade">
 	<name>Easy Reservation</name>
-	<creationDate>2013-10-06</creationDate>
+	<creationDate>September 2015</creationDate>
 	<author>Johannes Tigges</author>
 	<authorEmail>johannes.tigges@freenet.de</authorEmail>
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<version>0.0.1</version>
-	<description>The purpose of this joomla module ist to provide an easy to use reservation system.
+	<description>
+The purpose of this joomla module ist to provide an easy to use reservation system.
 To make a reservation, a user must be logged into the joomla. 
 	</description>
 
@@ -25,24 +26,31 @@ To make a reservation, a user must be logged into the joomla.
 
 	<files folder="site">
 		<filename>index.html</filename>
+		<filename>easyreservation.php</filename>
+		<filename>controller.php</filename>
+		<folder>views</folder>
 	</files> 
 
-	<scriptfile>install.php</scriptfile>
+<!-- 	<scriptfile>install.php</scriptfile>  -->
 
 	<languages>
-		<language tag="en-GB">languages/site/en-GB.com_ezreservation.ini</language>
-		<language tag="de-DE">languages/site/de-DE.com_ezreservation.ini</language>
+		<language tag="en-GB">languages/site/en-GB.com_easyreservation.ini</language>
+		<language tag="de-DE">languages/site/de-DE.com_easyreservation.ini</language>
 	</languages>
 
 	<administration>
+	
+		<menu>Easy Reservation</menu>
+		
 		<files folder="admin">
 			<filename>install.sql</filename>
 			<filename>uninstall.sql</filename>
+			<filename>easyreservation.php</filename>
 		</files>  
 
 		<languages>
-			<language tag="en-GB">languages/admin/en-GB.com_ezreservation.ini</language>
-			<language tag="de-DE">languages/admin/de-DE.com_ezreservation.ini</language>
+			<language tag="en-GB">languages/admin/en-GB.com_easyreservation.ini</language>
+			<language tag="de-DE">languages/admin/de-DE.com_easyreservation.ini</language>
 		</languages>
 
 	</administration>
