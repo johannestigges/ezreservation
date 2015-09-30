@@ -11,4 +11,3 @@ jimport('joomla.application.component.controller');
 class EasyReservationController extends JControllerLegacy
 {
 }
-?>

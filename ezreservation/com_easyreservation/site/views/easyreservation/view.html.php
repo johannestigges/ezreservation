@@ -1,4 +1,3 @@
-hellp easy reservation in view!!!
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
@@ -15,7 +14,14 @@ class EasyReservationViewEasyReservation extends JViewLegacy
 	function display($tpl = null) 
 	{
 		// Assign data to the view
-		$this->msg = 'Hello Easy Reservation';
+		$this->msg = $this->get('Msg');
+		
+		// check for errors
+		if (count($errors = $this->get('Errors')))
+		{
+			JLog::dd(implode('<br />', $errors), JLog::WARNING, 'jerror');
+			return false;
+		}
  
 		// Display the view
 		parent::display($tpl);

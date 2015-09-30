@@ -3,4 +3,15 @@
 	<layout title="COM_EASYRESERVATION_VIEW_DEFAULT_TITLE">
 		<message>COM_EASYRESERVATION_VIEW_DEFAULT_DESC</message>
 	</layout>
+	<fields	name="request"
+			addfieldpath="/administrator/components/com_easreservation/models/fields"
+			>
+		<fieldset name="request">
+			<field	name="id"
+					type="easyreservation"
+					label="COM_EASYRESERVATION_FIELD_GREETING_LABEL"
+					description="COM_EASYRESERVATION_FIELD_GREETING_DESC"					
+					/>                                
+		</fieldset>	
+	</fields>	
 </metadata>

@@ -3,6 +3,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+//load tables
+JTable::addIncludePath(JPATH_COMPONENT.'/tables');
+
 // import joomla controller library
 jimport('joomla.application.component.controller');
 
@@ -15,4 +18,3 @@ $controller->execute($input->getCmd('task'));
 
 // Redirect if set by the controller
 $controller->redirect();
-?>

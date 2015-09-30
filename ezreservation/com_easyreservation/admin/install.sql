@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS `#__ezr_reservation` (
   `description`			varchar(10000)	DEFAULT NULL,
   `reservation_type` 	int(4) 			NOT NULL,
   `user_id` 			int(11) 		DEFAULT NULL,
+  `id_reservable` 		int(11) 		NOT NULL,
   `start_time`			datetime 		NOT NULL,
   `end_time` 			datetime 		NOT NULL,
-  `id_reservable` 		int(11) 		NOT NULL,
   `start_day`			datetime 		DEFAULT NULL,
   `end_day` 			datetime 		DEFAULT NULL, 
   `created` 			datetime 		NOT NULL,
@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `#__ezr_reservation` (
 CREATE TABLE IF NOT EXISTS `#__ezr_occupation` (
   `id_reservable` 		int(11) 		NOT NULL,
   `start_time` 			datetime 		NOT NULL,
+  `end_time` 			datetime 		NOT NULL,
   `id_reservation` 		int(11) 		NOT NULL,
  PRIMARY KEY (`id_reservable`,`start_time`)
 );
