@@ -17,7 +17,7 @@ class EasyReservationTableReservation extends JTable {
 		$user = JFactory::getUser ();
 		if (isset ( $user )) {
 			$userid = $user->id;
-			return $this->_db->setQuery ( 'select * from #__ezr_reservation where user_id = $userid order by created' )->loadObjectList ();
+			return $this->_db->setQuery ( "select * from #__ezr_reservation where user_id = $userid order by created" )->loadObjectList ();
 		}
 	}
 }
