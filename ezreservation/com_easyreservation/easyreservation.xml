@@ -31,6 +31,8 @@ To make a reservation, a user must be logged into the joomla.
 		<folder>views</folder>
 		<folder>models</folder>
 		<folder>tables</folder>
+		<folder>util</folder>
+		<folder>css</folder>
 	</files> 
 
 <!-- 	<scriptfile>install.php</scriptfile>  -->

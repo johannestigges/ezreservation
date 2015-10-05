@@ -10,11 +10,13 @@ jimport ( 'joomla.application.component.view' );
  */
 class EasyReservationViewReservables extends JViewLegacy {
 	
+	protected $reservables;
+	
 	// Overwriting JView display method
 	function display($tpl = null) {
-		$this->msg = "<h1>Reservables</h1>";
+		$this->msg = '<h1>' . JText::_('COM_EASYRESERVATION_RESERVABLES').'</h1>';
 		
-		foreach ( $this->get ( 'All' ) as $reservable ) {
+		foreach ( $this->get ( 'Reservables' ) as $reservable ) {
 			$this->msg .= ('<br />' . $reservable->id . ' ' . $reservable->name);
 		}
 		
@@ -28,4 +30,27 @@ class EasyReservationViewReservables extends JViewLegacy {
 		// Display the view
 		parent::display ( $tpl );
 	}
+	
+	/**
+	 * liest alle reservables über das Model ein
+	 */
+	private function getReservables() {
+		$this->reservables = $this->get('Reservables');
+	}
+	
+	/**
+	 * liefert ein Reservable zur ID
+	 * @param unknown $id
+	 * @return unknown
+	 */
+	public function reservable($id) {
+		if (!isset($this->reservables)) {
+			$this->getReservables();
+		}
+		foreach ($this->reservables as $reservable) {
+			if ($reservable->id == $id) {
+				return $reservable;
+			}
+		}
+	} 
 }

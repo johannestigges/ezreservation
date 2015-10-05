@@ -12,7 +12,7 @@ class EasyReservationViewReservables extends JViewLegacy {
 	// Overwriting JView display method
 	function display($tpl = null) {
 		echo "<?xml version='1.0' encoding='UTF-8'?> <reservables>";
-		foreach ( $this->get ( 'All' ) as $reservable ) {
+		foreach ( $this->get ( 'Reservables' ) as $reservable ) {
 			echo "<reservable>";
 			echo "<id>" . $reservable->id . "</id>";
 			echo "<name>" . $reservable->name . "</name>";

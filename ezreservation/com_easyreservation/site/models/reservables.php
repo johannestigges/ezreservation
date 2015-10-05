@@ -12,7 +12,7 @@ class EasyReservationModelReservables extends JModelItem {
 	/**
 	 * get all reservables
 	 */
-	public function getAll() {
+	public function getReservables() {
 		$table = JTable::getInstance ( 'Reservable', 'EasyReservationTable' );
 		return $table->getAll ();
 	}
