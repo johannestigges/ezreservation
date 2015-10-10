@@ -44,7 +44,7 @@ echo $this->msg;
 	</label>
 	
 	<button type="submit" name="submit" value="1"><?php echo JText::_(COM_EASYRESERVATION_NEW_RESERVATION_SUBMIT);?> </button>
-	<button type="submit" name="cancel" value="1"><?php echo JText::_(COM_EASYRESERVATION_NEW_RESERVATION_CANCEL);?> </button>
+	<button type="submit" name="cancel" value="1"><?php echo JText::_(COM_EASYRESERVATION_CANCEL);?> </button>
 </form>
 
 

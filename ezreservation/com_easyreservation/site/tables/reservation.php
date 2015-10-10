@@ -36,18 +36,18 @@ class EasyReservationTableReservation extends JTable {
 				'start_time',
 				'end_time' 
 		);
-		$values = array ();
-		$values [] = $db->quote ( $data ['name'] );
-		$values [] = $db->quote ( $data ['reservation_type'] );
-		$values [] = $db->quote ( $data ['user_id'] );
-		$values [] = $db->quote ( $data ['id_reservable'] );
-		$values [] = $db->quote ( $data ['start_time'] );
-		$values [] = $db->quote ( $data ['end_time'] );
+		$values = array (
+				$db->quote ( $data ['name'] ),
+				$db->quote ( $data ['reservation_type'] ),
+				$db->quote ( $data ['user_id'] ),
+				$db->quote ( $data ['id_reservable'] ),
+				$db->quote ( $data ['start_time'] ),
+				$db->quote ( $data ['end_time'] ) 
+		);
 		$query = $db->getQuery ( true );
 		$query->insert ( $db->quoteName ( '#__ezr_reservation' ) )->columns ( $db->quoteName ( $columns ) )->values ( implode ( ',', $values ) );
 		$db->setQuery ( $query );
 		$db->execute ();
-		echo "inserted";
-		return $db->insertid();
+		return $db->insertid ();
 	}
 }

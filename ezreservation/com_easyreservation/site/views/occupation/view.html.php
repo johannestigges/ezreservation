@@ -15,10 +15,9 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	
 	// Overwriting JView display method
 	function display($tpl = null) {
-
 		$this->occupations = $this->get ( 'Occupations' );
 		$this->reservables = $this->get ( 'Reservables' );
-		$this->occupation_date = $this->get('OccupationDate');
+		$this->occupation_date = $this->get ( 'OccupationDate' );
 		
 		$this->msg ( '<table class="occupation_table">' )->nl ()->msg ( '<tr>' );
 		$this->tag ( JText::_ ( 'COM_EASYRESERVATION_OCCUPATION_TIME' ), 'th', 'colspan="3"' );
@@ -39,6 +38,13 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		}
 		$this->msg ( '</table>' )->nl ();
 		
+		if (JFactory::getUser ()->id > 0) {
+			$this->tag ( JText::_ ( 'COM_EASYRESERVATION_OCCUPATION_NEW_RESERVATION' ), 'a', 'href=' . $this->baseurl . '/index.php?option=com_easyreservation&view=newreservation' );
+			$this->msg ( ' ' );
+			$this->tag ( JText::_ ( 'COM_EASYRESERVATION_OCCUPATION_MY_RESERVATIONS' ), 'a', 'href=' . $this->baseurl . '/index.php?option=com_easyreservation&view=reservation' );
+		} else {
+			$this->tag ( JText::_ ( 'COM_EASYRESERVATION_OCCUPATION_SUBMIT_LOGIN' ), 'a', 'href=' . $this->baseurl . '/index.php/anmelden' );
+		}
 		// check for errors
 		if (count ( $errors = $this->get ( 'Errors' ) )) {
 			JLog::dd ( implode ( '<br />', $errors ), JLog::WARNING, 'jerror' );
@@ -48,21 +54,18 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		// Display the view
 		parent::display ( $tpl );
 	}
-	
 	private function tag($content, $tag, $attr = null) {
 		$this->msg ( "<$tag" );
 		if (isset ( $attr )) {
 			$this->msg ( ' ' . $attr );
 		}
-		$this->msg ( '>' )->msg ( $content )->msg ( "</$tag>" );
+		$this->msg ( '>' )->msg ( $content )->msg ( '</$tag>' );
 		return $this;
 	}
-	
 	private function msg($content) {
 		$this->msg .= $content;
 		return $this;
 	}
-	
 	private function nl() {
 		$this->msg .= "\n";
 		return $this;
@@ -73,7 +76,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	}
 	private function isStart($occupation, $time) {
 		$date = new JDate ( $occupation->start_time );
-		return strcmp ( $date->format ( 'H' ), $time ) == 0;
+		return ( int ) $date->format ( 'H' ) == ( int ) $time;
 	}
 	private function day($datetime) {
 		$date = new JDate ( $datetime );

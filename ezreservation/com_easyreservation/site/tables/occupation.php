@@ -37,16 +37,11 @@
 			return $db->loadObjectList ();
 		}
 		
-		/**
-		 * select all occuptions
-		 */
 		public function getOccupations($date) {
 			$d = date ( 'Y-m-d', $date );
 			return $this->_db->setQuery ( "select * from #__ezr_occupation where date(start_time) = '$d' order by start_time" )->loadObjectList ();
 		}
-		
 		public function insert($data) {
-			echo 'insert <pre>';print_r($data);echo '</pre>';
 			$db = $this->_db;
 			$columns = array (
 					'id_reservable',
@@ -56,15 +51,15 @@
 					'name',
 					'reservation_type' 
 			);
-			$values = array ();
-			$values [] = $db->quote ( $data ['id_reservable'] );
-			$values [] = $db->quote ( $data ['start_time'] );
-			$values [] = $db->quote ( $data ['end_time'] );
-			$values [] = $db->quote ( $data ['id_reservation'] );
-			$values [] = $db->quote ( $data ['name'] );
-			$values [] = $db->quote ( $data ['reservation_type'] );
+			$values = array (
+					$db->quote ( $data ['id_reservable'] ),
+					$db->quote ( $data ['start_time'] ),
+					$db->quote ( $data ['end_time'] ),
+					$db->quote ( $data ['id_reservation'] ),
+					$db->quote ( $data ['name'] ),
+					$db->quote ( $data ['reservation_type'] ) 
+			);
 			$query = $db->getQuery ( true );
-			print_r ( $query );
 			$query->insert ( $db->quoteName ( '#__ezr_occupation' ) )->columns ( $db->quoteName ( $columns ) )->values ( implode ( ',', $values ) );
 			$db->setQuery ( $query );
 			$db->execute ();
