@@ -10,11 +10,11 @@ require_once JPATH_COMPONENT . '/views/reservables/view.html.php';
 /**
  * HTML View class for the Easy Reservation Component
  */
-class EasyReservationViewReservation extends JViewLegacy {
+class EasyReservationViewReservations extends JViewLegacy {
 	
 	// Overwriting JView display method
 	function display($tpl = null) {
-		$this->msg = '<h1>' . JText::_ ( 'COM_EASYRESERVATION_MY_RESERVATIONS' ) . '</h1>';
+		$this->msg = '<h1>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS' ) . '</h1>';
 		
 		$this->msg .= '<table><tr>';
 		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_RESERVABLE' ) . '</th>');

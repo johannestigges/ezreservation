@@ -8,7 +8,7 @@ jimport ( 'joomla.application.component.modelitem' );
 /**
  * Reservations model
  */
-class EasyReservationModelReservation extends JModelItem {
+class EasyReservationModelReservations extends JModelItem {
 	/**
 	 * get all reservables
 	 */

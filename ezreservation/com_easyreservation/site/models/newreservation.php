@@ -23,6 +23,9 @@ class EasyReservationModelNewReservation extends JModelItem {
 		
 		$jinput = JFactory::getApplication ()->input;
 		$user = JFactory::getUser();
+		if ($user->id == 0) {
+			return $this->redirectWithMessage(COM_EASYRESERVATION_NOT_LOGGED_IN,'warning','index.php/anmelden');
+		}
 		
 		$data = array();
 		$data['name'] = $user->name;
@@ -32,12 +35,14 @@ class EasyReservationModelNewReservation extends JModelItem {
 		$data['start_time'] = $this->calcStartTime($jinput);
 		$data['end_time'] = $this->calcEndTime($jinput, $data['start_time']);
 		
+		// check availability
 		$occupations = $table_occupation->select($data['id_reservable'],$data['start_time'],$data['end_time']);
 		if (count($occupations) == 0) {
 			$data['id_reservation'] = $table_reservation->insertReservation($data);
 			$table_occupation->insert($data);
+			return $this->redirectWithMessage(COM_EASYRESERVATION_RESERVATION_CREATED, 'index.php/component/easyreservation?view=occupation');
 		} else {
-			JFactory::getApplication()->enqueueMessage(JText::_('COM_EASYRESERVATION_OCCUPATION_NOT_AVAILABLE'),'warning');
+			return $this->redirectWithMessage(COM_EASYRESERVATION_OCCUPATION_NOT_AVAILABLE,'warning','index.php/component/easyreservation?view=newReservation');
 		}
 	}
 	
@@ -54,6 +59,12 @@ class EasyReservationModelNewReservation extends JModelItem {
 	
 	private function table($table) {
 		return JTable::getInstance ( $table, 'EasyReservationTable' );
+	}
+	
+	private function redirectWithMessage($message, $type='message', $url) {
+		$app = &JFactory::getApplication();
+		$app->redirect($url);
+		$app->enqueueMessage(JText::_($msg),$type);
 	}
 	
 }
