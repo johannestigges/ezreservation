@@ -13,12 +13,11 @@ class EasyReservationModelOccupation extends JModelItem {
 	 * select all occupation of the selected day
 	 */
 	public function getOccupations() {
-		return $this->table()->getOccupations ( $this->getOccupationDate () );
+		$occupation_date = $this->getOccupationDate();
+		$occupations =  $this->table()->getOccupations($occupation_date, strtotime('+7 day', $occupation_date));
+		return $occupations;
 	}
-	
-	public function getOccupation ($start_time, $end_time) {
-		return $this->table()->getOccupation ($start_time, $end_time);		
-	}
+
 	
 	/**
 	 * get all reservables
@@ -34,8 +33,8 @@ class EasyReservationModelOccupation extends JModelItem {
 	 */
 	public function getOccupationDate() {
 		$jinput = JFactory::getApplication ()->input;
-		
-		$occupation_date = $jinput->get ( 'occupation_date', strtotime ( 'now' ) );
+
+		$occupation_date = $jinput->get ( 'occupation_date', strtotime(date('d.m.Y')) );
 		
 		if ($jinput->get ( 'increment_date', null ) == '1') {
 			$occupation_date = strtotime ( '+1 day', $occupation_date );

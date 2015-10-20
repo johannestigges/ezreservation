@@ -36,11 +36,32 @@
 			$db->setQuery ( $query );
 			return $db->loadObjectList ();
 		}
-		
-		public function getOccupations($date) {
-			$d = date ( 'Y-m-d', $date );
-			return $this->_db->setQuery ( "select * from #__ezr_occupation where date(start_time) = '$d' order by start_time" )->loadObjectList ();
+
+		public function getOccupations($start_time, $end_time, $id_reservable = 0) {
+			$db = $this->_db;
+			$query = $db->getQuery ( true );
+			$query->select ( array (
+					'id_reservable',
+					'start_time',
+					'end_time',
+					'id_reservation',
+					'name',
+					'reservation_type' 
+			) );
+			$query->from ( $db->quoteName ( '#__ezr_occupation' ) );
+			$query->where ( "start_time < " . $this->quoteDate ( $end_time ) );
+			$query->where ( 'end_time > ' . $this->quoteDate ( $start_time ) );
+			if ($id_reservable > 0) {
+				$query->where ( "id_reservable = $id_reservable" );
+			}
+			$db->setQuery ( $query );
+			return $db->loadObjectList ();
 		}
+		
+		// public function getOccupations($date) {
+		// $d = date ( 'Y-m-d', $date );
+		// return $this->_db->setQuery ( "select * from #__ezr_occupation where date(start_time) = '$d' order by start_time" )->loadObjectList ();
+		// }
 		public function insert($data) {
 			$db = $this->_db;
 			$columns = array (
@@ -63,5 +84,9 @@
 			$query->insert ( $db->quoteName ( '#__ezr_occupation' ) )->columns ( $db->quoteName ( $columns ) )->values ( implode ( ',', $values ) );
 			$db->setQuery ( $query );
 			$db->execute ();
+		}
+		
+		private function quoteDate($date) {
+			return $this->_db->quote ( JFactory::getDate ( $date )->toSql () );
 		}
 	}	
