@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_EASYRESERVATION_OCCUPATION_VIEW_DEFAULT_TITLE">
+		<message>COM_EASYRESERVATION_OCCUPATION_VIEW_DEFAULT_DESC</message>
+	</layout>
+	<fields name="request">
+		<fieldset name="request">
+			<field name="days" type="number"
+				label="COM_EASYRESERVATION_OCCUPATION_FIELD_DAYS_LABEL" 
+				description="COM_EASYRESERVATION_OCCUPATION_FIELD_DAYS_DESC"
+				default="1" mix="1" max="7">
+			</field>
+			<field name="start_hour" type="number"
+				label="COM_EASYRESERVATION_OCCUPATION_FIELD_HF_LABEL" 
+				description="COM_EASYRESERVATION_OCCUPATION_FIELD_HF_DESC"
+				default="7" mix="0" max="23">
+			</field>
+			<field name="end_hour" type="number"
+				label="COM_EASYRESERVATION_OCCUPATION_FIELD_HU_LABEL" 
+				description="COM_EASYRESERVATION_OCCUPATION_FIELD_HU_DESC"
+				default="21" mix="0" max="23">
+			</field>
+		</fieldset>
+	</fields>
+</metadata>
