@@ -16,16 +16,18 @@ class EasyReservationViewReservations extends JViewLegacy {
 	function display($tpl = null) {
 		$this->msg = '<h1>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS' ) . '</h1>';
 		
-		$this->msg .= '<table><tr>';
+		$this->msg .= '<table style="border-collapse: separate; border-spacing:20px;"><tr>';
 		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_RESERVABLE' ) . '</th>');
-		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_START_TIME' ) . '</th>');
-		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_END_TIME' ) . '</th>');
+		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_DATE' ) . '</th>');
+		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_TIME' ) . '</th>');
+		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_CREATED' ) . '</th>');
 		$this->msg .= '</tr>';
 		foreach ( $this->get ( 'MyReservations' ) as $reservation ) {
 			$this->msg .= '<tr>';
 			$this->msg .= ('<td>' . $reservation->id_reservable . '</td>');
-			$this->msg .= ('<td>' . $reservation->start_time . '</td>');
-			$this->msg .= ('<td>' . $reservation->end_time . '</td>');
+			$this->msg .= ('<td>' . $this->date($reservation->start_time) . '</td>');
+			$this->msg .= ('<td>' . $this->time($reservation->start_time) . ' - ' . $this->time($reservation->end_time) . '</td>');
+			$this->msg .= ('<td>' . $reservation->created . '</td>');
 			$this->msg .= '</tr>';
 			// $reserable = $this->reservable($reservation->id_reservable);
 			// $this->mg .= $reservable->name;
@@ -45,5 +47,11 @@ class EasyReservationViewReservations extends JViewLegacy {
 		
 		// Display the view
 		parent::display ( $tpl );
+	}
+	private function date($d) {
+		return JFactory::getDate($d)->format ('d.m.Y');
+	}
+	private function time($d) {
+		return JFactory::getDate($d)->format ('H:i');
 	}
 }

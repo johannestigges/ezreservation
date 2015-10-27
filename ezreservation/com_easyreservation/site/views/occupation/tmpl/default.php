@@ -12,7 +12,7 @@ action="<?php echo JRoute::_('index.php?option=com_easyreservation&view=occupati
 	method="POST" id="occupationform">
 	<h1><?php echo JText::_(COM_EASYRESERVATION_OCCUPATION);?>
 
-	<input type="hidden" name="occupation_date" value="<?php echo $this->occupation_date; ?>" />
+	<input type="hidden" name="start_date" value="<?php echo $this->start_date; ?>" />
 	<button id="decrement_date" name="decrement_date" value='1'>-</button>
 	<button id="increment_date" name="increment_date" value='1'>+</button>
 	</h1>

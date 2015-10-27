@@ -1,6 +1,8 @@
  <?php
 	defined ( '_JEXEC' ) or die ( 'Restricted access' );
+	
 	class EasyReservationTableOccupation extends JTable {
+		
 		/**
 		 * Constructor
 		 *
@@ -8,35 +10,9 @@
 		 *        	object Database connector object
 		 */
 		function __construct(&$db) {
-			parent::__construct ( '#__ezr_occupation', [ 
-					'id_reservable',
-					'start_time' 
-			], $db );
+			parent::__construct ( '#__ezr_occupation', [ 'id_reservable', 'start_time'], $db );
 		}
 		
-		/**
-		 * select an occupation
-		 * <p>
-		 * use this functionto check if a period is available
-		 *
-		 * @param unknown $start_time        	
-		 * @param unknown $end_time        	
-		 */
-		public function select($id_reservable, $start_time, $end_time) {
-			$db = $this->_db;
-			$query = $db->getQuery ( true );
-			$query->select ( array (
-					'id_reservable',
-					'start_time',
-					'end_time',
-					'id_reservation',
-					'name',
-					'reservation_type' 
-			) )->from ( $db->quoteName ( '#__ezr_occupation' ) )->where ( "id_reservable = $id_reservable and (start_time <= '$start_time' and end_time > '$start_time') or ((start_time <= '$end_time' and end_time > '$end_time'))" );
-			$db->setQuery ( $query );
-			return $db->loadObjectList ();
-		}
-
 		public function getOccupations($start_time, $end_time, $id_reservable = 0) {
 			$db = $this->_db;
 			$query = $db->getQuery ( true );
@@ -58,10 +34,6 @@
 			return $db->loadObjectList ();
 		}
 		
-		// public function getOccupations($date) {
-		// $d = date ( 'Y-m-d', $date );
-		// return $this->_db->setQuery ( "select * from #__ezr_occupation where date(start_time) = '$d' order by start_time" )->loadObjectList ();
-		// }
 		public function insert($data) {
 			$db = $this->_db;
 			$columns = array (
@@ -74,8 +46,8 @@
 			);
 			$values = array (
 					$db->quote ( $data ['id_reservable'] ),
-					$db->quote ( $data ['start_time'] ),
-					$db->quote ( $data ['end_time'] ),
+					$this->quoteDate ( $data ['start_time'] ),
+					$this->quoteDate ( $data ['end_time'] ),
 					$db->quote ( $data ['id_reservation'] ),
 					$db->quote ( $data ['name'] ),
 					$db->quote ( $data ['reservation_type'] ) 
@@ -85,8 +57,8 @@
 			$db->setQuery ( $query );
 			$db->execute ();
 		}
-		
+
 		private function quoteDate($date) {
-			return $this->_db->quote ( JFactory::getDate ( $date )->toSql () );
+			return $this->_db->quote ( date ('Y-m-d H:i:s', $date));
 		}
 	}	

@@ -5,7 +5,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 // import Joomla view library
 jimport ( 'joomla.application.component.view' );
 
-require_once JPATH_COMPONENT . '/views/reservables/view.html.php';
+// require_once JPATH_COMPONENT . '/views/reservables/view.html.php';
 
 /**
  * HTML View class for the Easy Reservation Component
@@ -13,33 +13,39 @@ require_once JPATH_COMPONENT . '/views/reservables/view.html.php';
 class EasyReservationViewNewReservation extends JViewLegacy {
 
 	public $reservables;
-	public $date;
+	public $input_data;
 	
 	// Overwriting JView display method
 	function display($tpl = null) {
-
+	
 		$this->reservables = $this->get('Reservables');
-		$this->date = new JDate('now + 1 day');
 		$jinput = JFactory::getApplication()->input;
 
-
-			// check for errors
-		if (count ( $errors = $this->get ( 'Errors' ) )) {
-			JLog::dd ( implode ( '<br />', $errors ), JLog::WARNING, 'jerror' );
-			return false;
-		}
-		
-		if ($jinput->get('submit',null ) == '1') {
-			$model = new EasyReservationModelNewReservation();
-			$model->newReservation();
-			return true;
-		}
 		if ($jinput->get('cancel',null) == '1' || !JFactory::getUser()->id) {
 			JFactory::getApplication()->redirect(JRoute::_("index.php?option=com_easyreservation&view=occupation"));
 			return true;
-		} else {
-			// Display the view
-			parent::display ( $tpl );
 		}
+
+		$model = new EasyReservationModelNewReservation();
+		
+		if ($jinput->get('submit',null ) == '1') {
+			if ($model->newReservation() == true) {
+				return true;
+			}
+		} 
+
+		if (($this->input_data = $model->getData()) == false) {
+			return true;
+		}
+		
+		// check for errors
+		if (count ( $errors = $this->get ( 'Errors' ) )) {
+			JLog::dd ( implode ( '<br />', $errors ), JLog::WARNING, 'jerror' );
+			print_r($errors);
+			return false;
+		}
+
+		// Display the view
+		parent::display ( $tpl );
 	}
 }
