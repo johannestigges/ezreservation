@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `#__ezr_reservation` (
   `name` 				varchar(255) 	DEFAULT NULL,
   `description`			varchar(10000)	DEFAULT NULL,
   `reservation_type` 	int(4) 			NOT NULL,
+  `status`              int(1)          NOT NULL DEFAULT 0,
   `user_id` 			int(11) 		DEFAULT NULL,
   `id_reservable` 		int(11) 		NOT NULL,
   `start_time`			datetime 		NOT NULL,

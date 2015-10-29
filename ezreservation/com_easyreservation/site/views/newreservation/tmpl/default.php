@@ -3,7 +3,6 @@
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 JHtml::calendar ( date('Y-m-d',strtotime($this->input_data['start_date'])), 'start_date', 'start_date', '%d.%m.%Y' );
-
 echo $this->msg;
 ?>
 
@@ -61,4 +60,5 @@ echo $this->msg;
 	
 	<button type="submit" name="submit" value="1"><?php echo JText::_(COM_EASYRESERVATION_NEW_RESERVATION_SUBMIT);?></button>
 	<button type="submit" name="cancel" value="1"><?php echo JText::_(COM_EASYRESERVATION_CANCEL);?> </button>
-</form>
+	<?php echo JHtml::_('form.token');?>
+	</form>

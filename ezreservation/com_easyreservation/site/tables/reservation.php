@@ -23,6 +23,28 @@ class EasyReservationTableReservation extends JTable {
 			->loadObjectList ();
 		}
 	}
+
+	/**
+	 * cancel a reservation
+	 * <p>
+	 * the reservation gets status 1 and all occupations are deleted
+	 * 
+	 * @param unknown $id
+	 */
+	public function cancelReservation ($id) {
+		$db = JFactory::getDbo();
+		try {
+			$db->transactionStart();
+			$db->setQuery ("delete from #__ezr_occupation where id_reservation = $id");
+			$db->execute();
+			$db->setQuery ("update #__ezr_reservation set status = 1 where id = $id");
+			$db->execute();
+			$db->transactionCommit();
+		} catch (Exception $e) {
+			$db->transactionRollback();
+			JErrorPage::render($e);
+		}
+	}
 	
 	/**
 	 * insert a reservation
@@ -30,7 +52,8 @@ class EasyReservationTableReservation extends JTable {
 	 * @param array $data        	
 	 */
 	public function insertReservation($data) {
-		$db = $this->_db;
+		$db = JFactory::getDbo();
+		try {
 		$columns = array (
 				'name',
 				'reservation_type',
@@ -56,6 +79,9 @@ class EasyReservationTableReservation extends JTable {
 		$db->setQuery ( $query );
 		$db->execute ();
 		return $db->insertid ();
+		} catch (Exception $e) {
+			JErrorPage::render($e);
+		}
 	}
 	
 	/**

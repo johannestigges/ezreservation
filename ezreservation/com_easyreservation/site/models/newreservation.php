@@ -41,7 +41,8 @@ class EasyReservationModelNewReservation extends JModelItem {
 		
 		$this->reservation ['id_reservation'] = $table_reservation->insertReservation ( $this->reservation );
 		$table_occupation->insert ( $this->reservation );
-		$this->redirectWithMessage ( COM_EASYRESERVATION_RESERVATION_CREATED, 'index.php/component/easyreservation?view=occupation' );
+		$this->redirectWithMessage ( COM_EASYRESERVATION_RESERVATION_CREATED, 
+				'index.php/component/easyreservation?view=occupation' );
 		return true;
 	}
 	

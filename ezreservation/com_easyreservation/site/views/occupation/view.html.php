@@ -54,16 +54,16 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		$this->msg ( '</table>' )->nl ();
 		
 		if ($this->user->id > 0) {
-			$this->tag ( JText::_ ( 'COM_EASYRESERVATION_OCCUPATION_NEW_RESERVATION' ), 
-					'a', 'href=' . $this->baseurl . '/index.php?option=com_easyreservation&view=newreservation' );
+			$this->link('COM_EASYRESERVATION_OCCUPATION_NEW_RESERVATION', 
+					'index.php?option=com_easyreservation&view=newreservation');
 			$this->msg ( ' ' );
-			$this->tag ( JText::_ ( 'COM_EASYRESERVATION_OCCUPATION_MY_RESERVATIONS' ), 
-					'a', 'href=' . $this->baseurl . '/index.php?option=com_easyreservation&view=reservations' );
+			$this->link('COM_EASYRESERVATION_OCCUPATION_MY_RESERVATIONS', 
+					'index.php?option=com_easyreservation&view=reservations');
 		} else {
-			$link = new JUri(JRoute::_('index.php?option=com_users&view=login'));
-			$link->setVar('return', base64_encode(JUri::current()));
-			$this->tag ( JText::_ ( 'COM_EASYRESERVATION_OCCUPATION_SUBMIT_LOGIN' ), 'a', 'href=' . $link );
+			$this->link('COM_EASYRESERVATION_OCCUPATION_SUBMIT_LOGIN', 
+					'index.php?option=com_users&view=login');
 		}
+		
 		// check for errors
 		if (count ( $errors = $this->get ( 'Errors' ) )) {
 			JLog::dd ( implode ( '<br />', $errors ), JLog::WARNING, 'jerror' );
@@ -72,6 +72,12 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		
 		// Display the view
 		parent::display ( $tpl );
+	}
+
+	private function link($msg,$url) {
+		$link = new JUri(JRoute::_($url));
+		$link->setVar('return', base64_encode(JUri::current()));
+		$this->tag(JText::_($msg), 'a', "href='$link'");
 	}
 	
 	private function tag($content, $tag, $attr = null) {
