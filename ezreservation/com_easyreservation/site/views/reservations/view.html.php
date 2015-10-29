@@ -56,9 +56,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 			// $this->mg .= $reservable->name;
 		}
 		$this->msg .= "</table>\n";
-		$this->msg .= '<a href="';
-		$this->msg .= $this->baseurl;
-		$this->msg .= '/index.php?option=com_easyreservation&view=occupation">';
+		$this->msg .= '<a href="' . $this->back() . '">';
 		$this->msg .= JText::_ ( 'COM_EASYRESERVATION_BACK' );
 		$this->msg .= "</a>\n";
 		
@@ -93,9 +91,17 @@ class EasyReservationViewReservations extends JViewLegacy {
 		$link = JFactory::getURI();
 		$link->setVar('cancel',$id);
 		$this->msg .= '<td><a href="' . $link->toString() . '"';
-		$this->msg .= ' onclick="return confirm(\'Wollen Sie die Reservierung stornieren?\');"';
+		$this->msg .= (' onclick="return confirm(\''. JText::_ ('COM_EASYRESERVATION_CONFIRM_CANCEL') . '\');"');
 		$this->msg .= '>';
 		$this->msg .= JText::_ ('COM_EASYRESERVATION_RESERVATIONS_CANCEL');
 		$this->msg .= '</a>';
+	}
+	
+	private function back() {
+		$url = JFactory::getApplication()->input->get('return');
+		if ($url) {
+			return base64_decode($url);
+		}
+		return JRoute::_('index.php/option=com_eazyreservation?voiw=occupation');
 	}
 }

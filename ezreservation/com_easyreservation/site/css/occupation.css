@@ -1,7 +1,7 @@
 @CHARSET "ISO-8859-1";
 
-.occupation_table { table-layout:fixed; width:100%; border:1px solid; border-collapse: separate; border-spacing:10px; }
+.occupation_table { table-layout:fixed; width:100%; border:1px solid; border-collapse: separate; border-spacing:10px; text-align:center;}
 .type0 { background-color: lightgray;}
 .type1 { background-color: lightblue; }
 .type2 { background-color: lightgreen; }
-.type3 { background-color: lightbrown; }
+.type3 { background-color: #ffff80; }

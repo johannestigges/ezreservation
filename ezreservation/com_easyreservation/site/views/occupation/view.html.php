@@ -76,7 +76,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 
 	private function link($msg,$url) {
 		$link = new JUri(JRoute::_($url));
-		$link->setVar('return', base64_encode(JUri::current()));
+		$link->setVar('return', base64_encode(JFactory::getUri()->toString()));
 		$this->tag(JText::_($msg), 'a', "href='$link'");
 	}
 	

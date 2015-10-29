@@ -3,6 +3,8 @@
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 JHtml::calendar ( date('Y-m-d',strtotime($this->input_data['start_date'])), 'start_date', 'start_date', '%d.%m.%Y' );
+$user = JFactory::getUser();
+
 echo $this->msg;
 ?>
 
@@ -24,6 +26,21 @@ echo $this->msg;
 		?>
 		</select> 
 	</label> 
+	
+	<?php 
+	if ($user->authorise('core.admin')) { 
+		echo '<label>' . JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE); 
+		echo '<select name="reservation_type">';
+		echo '<option value="1"> ' . JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE1) . '</option>';
+		echo '<option value="2"> ' . JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE2) . '</option>';
+		echo '<option value="3"> ' . JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE3) . '</option>';
+		echo '<option value="4"> ' . JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE4) . '</option>';
+		echo '</select>'; 
+		echo '</label>'; 
+	} else {
+		echo '<input type="hidden" name="reservation_type" value="1" />';
+	}
+	?>
 	
 	<label><?php echo JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_DATE);?>  
 		<input type="text" id="start_date" name="start_date" 
@@ -47,7 +64,11 @@ echo $this->msg;
 	<label><?php echo JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_DURATION);?>  
 		<select name="duration">
 		<?php 
-		foreach ( range ( 1, 2 ) as $duration ) {
+		$i = 2;
+		if ($user->authorise('core.admin')) {
+			$i = 12;
+		}
+		foreach ( range ( 1, $i ) as $duration ) {
 			if ($duration == $this->input_data['duration']) {
 				echo "<option selected>$duration</option>";
 			} else {

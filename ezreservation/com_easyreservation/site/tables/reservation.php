@@ -33,12 +33,22 @@ class EasyReservationTableReservation extends JTable {
 	 */
 	public function cancelReservation ($id) {
 		$db = JFactory::getDbo();
+		
 		try {
+			$now = date ('Y-m-d H:i:s');
+			$user_id = JFactory::getUser()->id;
 			$db->transactionStart();
+			
 			$db->setQuery ("delete from #__ezr_occupation where id_reservation = $id");
 			$db->execute();
+			
 			$db->setQuery ("update #__ezr_reservation set status = 1 where id = $id");
 			$db->execute();
+			
+			$db->setQuery ("insert into #__ezr_protocol (id_reservation,created,user_id,description) 
+					values($id,'$now',$user_id,'reservation cancelled')");
+			$db->execute();
+			
 			$db->transactionCommit();
 		} catch (Exception $e) {
 			$db->transactionRollback();
