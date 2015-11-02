@@ -24,9 +24,11 @@ class EasyReservationModelReservations extends JModelItem {
 		
 		if ($table->load($id) and $table->id == $id and 
 			$table->status == 0 and	strtotime ($table->start_time) > strtotime ('+8 hours')) {
+				echo "cancel reservation $id";
 				$table->cancelReservation($id);
 				return true;
 		}
+		echo "cancel reservation $id not possible!!!";
 		return false;
 	}
 }

@@ -5,6 +5,9 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 // import Joomla view library
 jimport ( 'joomla.application.component.view' );
 
+// set locale
+setlocale(LC_ALL, JFactory::getLanguage()->getTag());
+
 /**
  * HTML View class for the Easy Reservation Component
  */
@@ -28,7 +31,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		$this->msg ( '<tr>' );
 		$this->tag ( '&nbsp;', 'th' );
 		foreach ( range ( 0, $days ) as $i ) {
-			$this->tag ( $this->addDays ( $this->start_date, $i ), 'th', 
+			$this->tag ($this->convertDate($this->addDays($this->start_date, $i)), 'th', 
 					'colspan="' . count ( $this->reservables ) . '"' );
 		}
 		$this->msg ( '</tr>' )->nl ();
@@ -76,7 +79,6 @@ class EasyReservationViewOccupation extends JViewLegacy {
 
 	private function link($msg,$url) {
 		$link = new JUri(JRoute::_($url));
-		$link->setVar('return', base64_encode(JFactory::getUri()->toString()));
 		$this->tag(JText::_($msg), 'a', "href='$link'");
 	}
 	
@@ -101,7 +103,17 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	}
 	
 	private function addDays($datetime, $i = 0) {
-		return date( 'd.m.Y', strtotime("+ $i days",$datetime) );
+		return strtotime("+ $i days",$datetime);
+	}
+	
+	/**
+	 * return formatted date
+	 * 
+	 * @param unknown $datetime
+	 * @return string
+	 */
+	private function convertDate ($datetime) {
+		return strftime( ' %a, %d.%m.%Y', $datetime);
 	}
 
 	private function isInTimeRange($start_time, $end_time, $occupation) {
@@ -134,16 +146,16 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	 */
 	private function showOccupation ($start_time, $occupation) {
 		// if the duration of the occupation is more than one timeslot,
-		// user 'rowspan' to thos the occupation block.
+		// user 'rowspan' to show the occupation block.
 		$duration = $this->getDuration($occupation);
 		if ($duration > 1) {
 			if ($start_time == strtotime($occupation->start_time)) {
-				$this->tag ( $occupation->name, 'td', "class='type$occupation->reservation_type' rowspan='$duration'" )->nl();
+				$this->tag ( $occupation->name, 'td', $this->reservationClass($occupation->reservation_type, $start_time) . " rowspan='$duration'" )->nl();
 			} else {
 				// show nothing!
 			}
 		} else {
-			$this->tag ( $occupation->name, 'td', "class='type$occupation->reservation_type'" )->nl();
+			$this->tag ( $occupation->name, 'td', $this->reservationClass($occupation->reservation_type, $start_time) )->nl();
 		}
 	}
 	
@@ -157,7 +169,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	private function showAvailable($datetime,$id_reservable) {
 		// user not logged in? -> no link available
 		if ($this->user->id == 0) {
-			return $this->tag ( '&nbsp', 'td', 'class="type0"' );
+			return $this->tag ( '&nbsp', 'td', $this->reservationClass(0, $datetime) );
 		}
 		// create link to new reservation
 		$link = new JUri(JRoute::_('index.php?option=com_easyreservation&view=newReservation'));
@@ -165,7 +177,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		$link->setVar('start_date',date('d.m.Y',$datetime));
 		$link->setVar('start_time',date('H',$datetime));
 		
-		$this->msg('<td class="type0">');
+		$this->msg('<td ' . $this->reservationClass(0,$datetime) . '>');
 		// use inner <div> tag to show the link in all available space
 		$this->tag('<div style="height:100%;width:100%">&nbsp;</div>', 'a', "href='$link'");
 		$this->msg('</td>')->nl();		
@@ -193,6 +205,20 @@ class EasyReservationViewOccupation extends JViewLegacy {
 					and $this->isInTimeRange($start_time, $start_time + 3600, $occupation)) {
 				return $occupation;
 			}
+		}
+	}
+	
+	private function reservationClass($type,$datetime) {
+// 		return "class='type". $type. "_weekend'";
+		return "class='type$type" . $this->weekend($datetime) . "'";
+	}
+	
+	private function weekend($datetime) {
+		$day = date('N', $datetime);
+		if (6 == $day or 7 == $day) {
+			return '_weekend';
+		} else {
+			return '';
 		}
 	}
 }

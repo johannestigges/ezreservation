@@ -19,31 +19,40 @@ class EasyReservationViewReservations extends JViewLegacy {
 			$JFactory::getApplication()->redirect(JUri::current());
 			return;
 		}
-		if ($this->cancel(JFactory::getApplication()->input->get('cancel'))==true) {
-			$this->msg .= "<div class='modal'>Reservierung wurde storniert.</div>";
-		}
 		
-		$this->msg = '<h1>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS' ) . "</h1>\n";
+		$this->cancel(JFactory::getApplication()->input->get('cancel'));
+		
+		$this->msg = '<h1>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS ) . "</h1>\n";
 		
 		$this->msg .= '<table style="border-collapse: separate; border-spacing:20px;"><tr>';
-		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_RESERVABLE' ) . '</th>');
-		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_DATE' ) . '</th>');
-		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_TIME' ) . '</th>');
-		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_CREATED' ) . '</th>');
-		$this->msg .= ('<th>' . JText::_ ( 'COM_EASYRESERVATION_RESERVATIONS_STATUS' ) . '</th>' );
+		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_RESERVABLE ) . '</th>');
+		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_TYPE ) . '</th>');
+		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_DATE ) . '</th>');
+		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_TIME ) . '</th>');
+		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_CREATED ) . '</th>');
+		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_STATUS ) . '</th>' );
+		if ($user->authorise('core.admin')) {
+			$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_USER ) . '</th>' );
+		}
+		
 		$this->msg .= ('<th>&nbsp;</th>' );
 		$this->msg .= "</tr>\n";
 		foreach ( $this->get ( 'MyReservations' ) as $reservation ) {
 			$this->msg .= '<tr>';
 			$this->msg .= ('<td>' . $reservation->id_reservable . '</td>');
+			$this->msg .= ('<td>' . JText::_('COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE'.$reservation->reservation_type). '</td>');
 			$this->msg .= ('<td>' . $this->date($reservation->start_time) . '</td>');
 			$this->msg .= ('<td>' . $this->time($reservation->start_time) . ' - ' . $this->time($reservation->end_time) . '</td>');
 			$this->msg .= ('<td>' . $reservation->created . '</td>');
 			if ($reservation->status == 1) {
-				$this->msg .= ('<td>' . JText::_ ('COM_EASYRESERVATION_RESERVATIONS_CANCELLED') . '</td>' );
+				$this->msg .= ('<td>' . JText::_ (COM_EASYRESERVATION_RESERVATIONS_CANCELLED) . '</td>' );
 			} else {
-				$this->msg .= '<td>&nbsp;</td>';
+				$this->msg .= '<td>'. JText::_(COM_EASYRESERVATION_RESERVATIONS_RESERVED) .'</td>';
 			}
+			if ($user->authorise('core.admin')) {
+				$this->msg .= '<td>'. JFactory::getUser($reservation->user_id)->name . '</td>';
+			}
+			
 			if ($this->canCancel($reservation)) {
 				$this->msg .= '<td>';
 				$this->showLinkCancel($reservation->id);
@@ -56,8 +65,8 @@ class EasyReservationViewReservations extends JViewLegacy {
 			// $this->mg .= $reservable->name;
 		}
 		$this->msg .= "</table>\n";
-		$this->msg .= '<a href="' . $this->back() . '">';
-		$this->msg .= JText::_ ( 'COM_EASYRESERVATION_BACK' );
+		$this->msg .= '<a href="' . JRoute::_('index.php') . '">';
+		$this->msg .= JText::_ ( COM_EASYRESERVATION_BACK );
 		$this->msg .= "</a>\n";
 		
 		// check for errors
@@ -91,17 +100,9 @@ class EasyReservationViewReservations extends JViewLegacy {
 		$link = JFactory::getURI();
 		$link->setVar('cancel',$id);
 		$this->msg .= '<td><a href="' . $link->toString() . '"';
-		$this->msg .= (' onclick="return confirm(\''. JText::_ ('COM_EASYRESERVATION_CONFIRM_CANCEL') . '\');"');
+		$this->msg .= (' onclick="return confirm(\''. JText::_ (COM_EASYRESERVATION_CONFIRM_CANCEL) . '\');"');
 		$this->msg .= '>';
-		$this->msg .= JText::_ ('COM_EASYRESERVATION_RESERVATIONS_CANCEL');
+		$this->msg .= JText::_ (COM_EASYRESERVATION_RESERVATIONS_CANCEL);
 		$this->msg .= '</a>';
-	}
-	
-	private function back() {
-		$url = JFactory::getApplication()->input->get('return');
-		if ($url) {
-			return base64_decode($url);
-		}
-		return JRoute::_('index.php/option=com_eazyreservation?voiw=occupation');
 	}
 }

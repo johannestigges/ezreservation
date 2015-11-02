@@ -14,6 +14,7 @@ class EasyReservationViewNewReservation extends JViewLegacy {
 
 	public $reservables;
 	public $input_data;
+	public $occupations;
 	
 	// Overwriting JView display method
 	function display($tpl = null) {
@@ -22,22 +23,19 @@ class EasyReservationViewNewReservation extends JViewLegacy {
 		$jinput = JFactory::getApplication()->input;
 
 		if ($jinput->get('cancel',null) == '1' || !JFactory::getUser()->id) {
-			JFactory::getApplication()->redirect(JRoute::_("index.php?option=com_easyreservation&view=occupation"));
-			return true;
+			return $this->back();
 		}
 
-		$model = new EasyReservationModelNewReservation();
-		
+		$model = $this->getModel();
+				
 		if ($jinput->get('submit',null ) == '1') {
 			JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 			if ($model->newReservation() == true) {
-				return true;
+				return $this->back();
 			}
 		} 
 
-		if (($this->input_data = $model->getData()) == false) {
-			return true;
-		}
+		$this->input_data = $model->getInputData();
 		
 		// check for errors
 		if (count ( $errors = $this->get ( 'Errors' ) )) {
@@ -48,5 +46,10 @@ class EasyReservationViewNewReservation extends JViewLegacy {
 
 		// Display the view
 		parent::display ( $tpl );
+	}
+	
+	private function back() {
+		JFactory::getApplication()->redirect( JRoute::_('index.php'));
+		return true;
 	}
 }
