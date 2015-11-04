@@ -6,7 +6,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 jimport ( 'joomla.application.component.modelitem' );
 
 /**
- * Reservations model
+ * Occupations model
  */
 class EasyReservationModelOccupation extends JModelItem {
 
@@ -33,12 +33,17 @@ class EasyReservationModelOccupation extends JModelItem {
 	 */
 	public function getStartDate() {
 		$jinput = JFactory::getApplication ()->input;
-		$start_date = $jinput->get ( 'start_date', strtotime(date('d.m.Y')) );
+		$start_date = $jinput->get ( 'start_date', strtotime(date('d.m.Y')));
 		if ($jinput->get ( 'increment_date', null ) == '1') {
-			$start_date = $this->addDays($start_date, $this->getDays());
-		}
-		if ($jinput->get ( 'decrement_date', null ) == '1') {
-			$start_date = $this->subtractDays($start_date, $this->getDays());
+			$start_date = $this->addDays($start_date, 1);
+		} else if ($jinput->get ( 'decrement_date', null ) == '1') {
+			$start_date = $this->subtractDays($start_date, 1);
+		} else if ($jinput->get ( 'increment_week', null ) == '1') {
+			$start_date = $this->addDays($start_date, 7);
+		} else if ($jinput->get ( 'decrement_week', null ) == '1') {
+			$start_date = $this->subtractDays($start_date, 7);
+		} else if ($jinput->get ( 'actual_date', null ) == '1') {
+			$start_date = strtotime(date('d.m.Y'));
 		}
 		return $start_date;
 	}

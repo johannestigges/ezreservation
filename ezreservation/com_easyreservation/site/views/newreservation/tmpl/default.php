@@ -104,6 +104,7 @@ echo $this->msg;
 		<input type="text" id="end_day" name="end_day" 
 				value="<?php echo $this->input_data['end_day']; ?>" maxlength="5">
 	</label>
+
 	<?php 
 	$occupations = $this->get('Occupations');
 	if (count($occupations) > 1) {

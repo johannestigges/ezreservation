@@ -69,7 +69,7 @@ class EasyReservationModelNewReservation extends JModelItem {
 		
 		return $this->input_data;
 	}
-	
+		
 	/**
 	 * create a new Reservation
 	 * 
@@ -118,9 +118,13 @@ class EasyReservationModelNewReservation extends JModelItem {
 	 * @return boolean
 	 */
 	private function checkData() {
+		$user = JFactory::getUser ();
+		
 		// check date not too far in future
-		if (strtotime ( '+ 14 days' ) < $this->reservation ['start_time']) {
-			JFactory::getApplication ()->enqueueMessage ( JText::_ ( COM_EASYRESERVATION_OCCUPATION_TOO_FAR_IN_FUTURE ), 'warning' );
+		if (strtotime ( '+ 14 days' ) < $this->reservation ['start_time'] and 
+				$user->authorise('core.admin') == false) {
+			JFactory::getApplication ()->enqueueMessage ( 
+					JText::_ ( COM_EASYRESERVATION_OCCUPATION_TOO_FAR_IN_FUTURE ), 'warning' );
 			return false;
 		}
 		
@@ -128,10 +132,14 @@ class EasyReservationModelNewReservation extends JModelItem {
 		$table_occupation = $this->table ( 'Occupation' );
 		for ($i = 0, $size = count($this->occupations); $i < $size; $i++) {
 			$occupation = $this->occupations[$i];
-			$o = $table_occupation->getOccupations ( $occupation ['start_time'], $occupation ['end_time'], $this->reservation ['id_reservable'] );
+			$o = $table_occupation->getOccupations ( 
+					$occupation ['start_time'], 
+					$occupation ['end_time'], 
+					$this->reservation ['id_reservable'] );
 			if (count($o) > 0) {
 				$this->occupations[$i]['occupied'] = 1;
-				JFactory::getApplication ()->enqueueMessage ( JText::_ ( COM_EASYRESERVATION_OCCUPATION_NOT_AVAILABLE ), 'warning' );
+				JFactory::getApplication ()->enqueueMessage ( 
+						JText::_ ( COM_EASYRESERVATION_OCCUPATION_NOT_AVAILABLE ), 'warning' );
 				return false;
 			}
 		}
@@ -141,38 +149,27 @@ class EasyReservationModelNewReservation extends JModelItem {
 	/**
 	 * transfer all data from $jinput to $input_data
 	 * and $reservation
+	 * 
 	 * @return boolean|multitype:
 	 */
 	private function getData() {
-		$user = JFactory::getUser ();
 		// check is user logged in?
+		$user = JFactory::getUser ();
 		if ($user->id == 0) {
 			$login = new JUri ( JRoute::_ ( 'index.php?option=com_users&view=login' ) );
 			$login->setVar ( 'return', base64_encode ( JFactory::getURI () ) );
 			$app->redirect ( JRoute::_ ( $login ) );
 			return false;
 		}
+		
+		// get input data
 		$this->getInputData();
 		
+		// create reservation data
 		$this->reservation = array ();
+
 		if (empty ( $this->input_data ['reservation_name'] )) {
-			switch ($this->input_data ['reservation_type']) {
-				case 1 :
-					$this->reservation ['name'] = $user->name;
-					break;
-				case 2 :
-					$this->reservation ['name'] = JText::_ ( 'COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE2' ) . '<br/>' . $this->reservation ['name'] = $user->name;
-					
-					break;
-				case 3 :
-					$this->reservation ['name'] = JText::_ ( 'COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE3' );
-					break;
-				case 4 :
-					$this->reservation ['name'] = JText::_ ( 'COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE4' );
-					break;
-				default :
-					$this->reservation ['name'] = $user->name;
-			}
+			$this->reservation ['name'] = $user->name;
 		} else {
 			$this->reservation ['name'] = $this->input_data ['reservation_name'];
 		}
@@ -186,11 +183,11 @@ class EasyReservationModelNewReservation extends JModelItem {
 		$this->reservation ['start_day'] = $this->input_data ['start_day'];
 		$this->reservation ['end_day'] = $this->input_data ['end_day'];
 		
+		// create occupations data
 		$this->createOccupations();
 		
-		return $this->input_data;
+		return true;
 	}
-	
 	
 	private function createOccupations() {
 		$this->occupations = array();

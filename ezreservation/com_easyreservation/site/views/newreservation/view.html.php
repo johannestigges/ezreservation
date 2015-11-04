@@ -22,7 +22,7 @@ class EasyReservationViewNewReservation extends JViewLegacy {
 		$this->reservables = $this->get('Reservables');
 		$jinput = JFactory::getApplication()->input;
 
-		if ($jinput->get('cancel',null) == '1' || !JFactory::getUser()->id) {
+		if ($jinput->get('cancel',null) == '1' || JFactory::getUser()->id == 0) {
 			return $this->back();
 		}
 

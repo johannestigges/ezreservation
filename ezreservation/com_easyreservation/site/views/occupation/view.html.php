@@ -28,7 +28,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		$endHour = $this->get('EndHour');
 		
 		$this->msg ( '<table class="occupation_table">' )->nl ();
-		$this->msg ( '<tr>' );
+		$this->msg ( '<thead><tr>' );
 		$this->tag ( '&nbsp;', 'th' );
 		foreach ( range ( 0, $days ) as $i ) {
 			$this->tag ($this->convertDate($this->addDays($this->start_date, $i)), 'th', 
@@ -42,7 +42,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 				$this->tag ( $reservable->name, 'th' );
 			}
 		}
-		$this->msg ( '</tr>' )->nl ();
+		$this->msg ( '</tr></thead><tbody>' )->nl ();
 		
 		foreach ( range ( $startHour, $endHour ) as $time ) {
 			$this->msg ( '<tr>' );
@@ -54,7 +54,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 			}
 			$this->msg ( '</tr>' );
 		}
-		$this->msg ( '</table>' )->nl ();
+		$this->msg ( '</tbody></table>' )->nl ();
 		
 		if ($this->user->id > 0) {
 			$this->link('COM_EASYRESERVATION_OCCUPATION_NEW_RESERVATION', 
@@ -150,12 +150,22 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		$duration = $this->getDuration($occupation);
 		if ($duration > 1) {
 			if ($start_time == strtotime($occupation->start_time)) {
-				$this->tag ( $occupation->name, 'td', $this->reservationClass($occupation->reservation_type, $start_time) . " rowspan='$duration'" )->nl();
+				$this->tag ( $this->showOccupationName($occupation), 'td', 
+						$this->reservationClass($occupation->reservation_type, $start_time) . " rowspan='$duration'" )->nl();
 			} else {
 				// show nothing!
 			}
 		} else {
-			$this->tag ( $occupation->name, 'td', $this->reservationClass($occupation->reservation_type, $start_time) )->nl();
+			$this->tag ( $this->showOccupationName($occupation), 'td', 
+					$this->reservationClass($occupation->reservation_type, $start_time) )->nl();
+		}
+	}
+	
+	private function showOccupationName($occupation) {
+		if ($this->user->id > 0) {
+			return JText::_("COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE". $occupation->reservation_type) . ' ' . $occupation->name;
+		} else {
+			return JText::_("COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE". $occupation->reservation_type);
 		}
 	}
 	
@@ -177,7 +187,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		$link->setVar('start_date',date('d.m.Y',$datetime));
 		$link->setVar('start_time',date('H',$datetime));
 		
-		$this->msg('<td ' . $this->reservationClass(0,$datetime) . '>');
+		$this->msg('<td ' . $this->reservationClass(0, $datetime) . '>');
 		// use inner <div> tag to show the link in all available space
 		$this->tag('<div style="height:100%;width:100%">&nbsp;</div>', 'a', "href='$link'");
 		$this->msg('</td>')->nl();		
@@ -209,7 +219,6 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	}
 	
 	private function reservationClass($type,$datetime) {
-// 		return "class='type". $type. "_weekend'";
 		return "class='type$type" . $this->weekend($datetime) . "'";
 	}
 	

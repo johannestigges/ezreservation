@@ -24,19 +24,19 @@ class EasyReservationViewReservations extends JViewLegacy {
 		
 		$this->msg = '<h1>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS ) . "</h1>\n";
 		
-		$this->msg .= '<table style="border-collapse: separate; border-spacing:20px;"><tr>';
+		$this->msg .= '<table style="border-collapse: separate; border-spacing:20px;"><thead><tr>';
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_RESERVABLE ) . '</th>');
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_TYPE ) . '</th>');
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_DATE ) . '</th>');
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_TIME ) . '</th>');
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_CREATED ) . '</th>');
-		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_STATUS ) . '</th>' );
 		if ($user->authorise('core.admin')) {
 			$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_USER ) . '</th>' );
 		}
-		
+		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_STATUS ) . '</th>' );
 		$this->msg .= ('<th>&nbsp;</th>' );
-		$this->msg .= "</tr>\n";
+		$this->msg .= "</tr></thead><tbody>\n";
+		
 		foreach ( $this->get ( 'MyReservations' ) as $reservation ) {
 			$this->msg .= '<tr>';
 			$this->msg .= ('<td>' . $reservation->id_reservable . '</td>');
@@ -44,15 +44,14 @@ class EasyReservationViewReservations extends JViewLegacy {
 			$this->msg .= ('<td>' . $this->date($reservation->start_time) . '</td>');
 			$this->msg .= ('<td>' . $this->time($reservation->start_time) . ' - ' . $this->time($reservation->end_time) . '</td>');
 			$this->msg .= ('<td>' . $reservation->created . '</td>');
+			if ($user->authorise('core.admin')) {
+				$this->msg .= '<td>'. JFactory::getUser($reservation->user_id)->name . '</td>';
+			}
 			if ($reservation->status == 1) {
 				$this->msg .= ('<td>' . JText::_ (COM_EASYRESERVATION_RESERVATIONS_CANCELLED) . '</td>' );
 			} else {
 				$this->msg .= '<td>'. JText::_(COM_EASYRESERVATION_RESERVATIONS_RESERVED) .'</td>';
 			}
-			if ($user->authorise('core.admin')) {
-				$this->msg .= '<td>'. JFactory::getUser($reservation->user_id)->name . '</td>';
-			}
-			
 			if ($this->canCancel($reservation)) {
 				$this->msg .= '<td>';
 				$this->showLinkCancel($reservation->id);
@@ -61,10 +60,8 @@ class EasyReservationViewReservations extends JViewLegacy {
 				$this->msg .= '<td>&nbsp;</td>';
 			}
 			$this->msg .= "</tr>\n";
-			// $reserable = $this->reservable($reservation->id_reservable);
-			// $this->mg .= $reservable->name;
 		}
-		$this->msg .= "</table>\n";
+		$this->msg .= "</tbody></table>\n";
 		$this->msg .= '<a href="' . JRoute::_('index.php') . '">';
 		$this->msg .= JText::_ ( COM_EASYRESERVATION_BACK );
 		$this->msg .= "</a>\n";

@@ -1,6 +1,12 @@
 @CHARSET "ISO-8859-1";
 
-.occupation_table { table-layout:fixed; width:100%; border:1px solid; border-collapse: separate; border-spacing:10px; text-align:center;}
+.occupation_table { 
+	table-layout:fixed; 
+	width:100%; 
+	border:1px solid; border-collapse: separate; border-spacing:10px; 
+	text-align:center;
+}
+
 .type0 { background-color: #dddddd;}
 .type1 { background-color: #fff096; }
 .type2 { background-color: #d5d5f5; }
@@ -12,4 +18,57 @@
 .type2_weekend { background-color: #b9b9c9; }
 .type3_weekend { background-color: #bacaba; }
 .type4_weekend { background-color: #b0d0d0; }
+
+@media(max-width: 40em){
+	.occupation_table tr > :nth-child(n+4),
+	.occupation_table th[colspan]:nth-child(n+3) 
+	{
+		display:none;
+	}
+}
+
+@media(max-width: 45m){
+	.occupation_table tr > :nth-child(n+4),
+	.occupation_table th[colspan]:nth-child(n+3)
+	 {
+		display:none;
+	}
+}
+@media(max-width: 50em){
+	.occupation_table tr > :nth-child(n+6),
+	.occupation_table th[colspan]:nth-child(n+4)
+	 {
+		display:none;
+	}
+}
+@media(max-width: 65em){
+	.occupation_table tr > :nth-child(n+8),
+	.occupation_table th[colspan]:nth-child(n+5)
+	 {
+		display:none;
+	}
+}
+@media(max-width: 75em){
+	.occupation_table tr > :nth-child(n+10),
+	.occupation_table th[colspan]:nth-child(n+6)
+	 {
+		display:none;
+	}
+}
+@media(max-width: 85em){
+	.occupation_table tr > :nth-child(n+12),
+	.occupation_table th[colspan]:nth-child(n+7)
+	 {
+		display:none;
+	}
+}
+@media(max-width: 100em){
+	.occupation_table tr > :nth-child(n+14),
+	.occupation_table th[colspan]:nth-child(n+8)
+	 {
+		display:none;
+	}
+}
+
+
  
