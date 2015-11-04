@@ -1,0 +1,13 @@
+@CHARSET "ISO-8859-1";
+
+
+label {
+  text-align: right;
+  width: 50%;
+  left: 0;
+  right: 1em;
+}
+
+.occupied {
+	color: red;
+}
