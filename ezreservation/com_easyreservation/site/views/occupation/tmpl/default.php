@@ -24,5 +24,6 @@ action="<?php echo JRoute::_('index.php?option=com_easyreservation&view=occupati
 	<button id="increment_week" name="increment_week" value="1"
 			title="<?php echo JText::_(COM_EASYRESERVATION_OCCUPATION_INCREMENT_WEEK); ?>">>></button>
 	</h1>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 <?php echo $this->msg; ?>

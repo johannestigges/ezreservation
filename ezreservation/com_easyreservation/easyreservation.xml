@@ -52,8 +52,8 @@ To make a reservation, a user must be logged into the joomla.
 		</files>  
 
 		<languages>
-			<language tag="en-GB">languages/admin/en-GB.com_easyreservation.ini</language>
-			<language tag="de-DE">languages/admin/de-DE.com_easyreservation.ini</language>
+			<language tag="en-GB">languages/admin/en-GB.com_easyreservation.sys.ini</language>
+			<language tag="de-DE">languages/admin/de-DE.com_easyreservation.sys.ini</language>
 		</languages>
 
 	</administration>

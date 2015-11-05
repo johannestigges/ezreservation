@@ -32,14 +32,14 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		$this->tag ( '&nbsp;', 'th' );
 		foreach ( range ( 0, $days ) as $i ) {
 			$this->tag ($this->convertDate($this->addDays($this->start_date, $i)), 'th', 
-					'colspan="' . count ( $this->reservables ) . '"' );
+					'colspan="' . count ( $this->reservables ) . '"' . $this->cls($this->days($i)) );
 		}
 		$this->msg ( '</tr>' )->nl ();
 		$this->msg ( '<tr>' );
 		$this->tag ( JText::_ ( 'COM_EASYRESERVATION_OCCUPATION_TIME' ), 'th' );
 		foreach ( range ( 0, $days ) as $i ) {
 			foreach ( $this->reservables as $reservable ) {
-				$this->tag ( $reservable->name, 'th' );
+				$this->tag ( $reservable->name, 'th', $this->cls($this->days($i)));
 			}
 		}
 		$this->msg ( '</tr></thead><tbody>' )->nl ();
@@ -132,9 +132,9 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		
 		$occupation = $this->getOccupation($start_time, $id_reservable);
 		if (isset($occupation)) {
-			$this->showOccupation($start_time, $occupation);
+			$this->showOccupation($day,$start_time, $occupation);
 		} else {
-			$this->showAvailable($start_time, $id_reservable);
+			$this->showAvailable($day,$start_time, $id_reservable);
 		}
 	}
 
@@ -144,20 +144,20 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	 * @param integer $start_time
 	 * @param object $occupation
 	 */
-	private function showOccupation ($start_time, $occupation) {
+	private function showOccupation ($day, $start_time, $occupation) {
 		// if the duration of the occupation is more than one timeslot,
 		// user 'rowspan' to show the occupation block.
 		$duration = $this->getDuration($occupation);
 		if ($duration > 1) {
 			if ($start_time == strtotime($occupation->start_time)) {
 				$this->tag ( $this->showOccupationName($occupation), 'td', 
-						$this->reservationClass($occupation->reservation_type, $start_time) . " rowspan='$duration'" )->nl();
+						" rowspan='$duration'" . $this->cls($this->reservationClass($occupation->reservation_type, $start_time).' '.$this->days($day)))->nl();
 			} else {
 				// show nothing!
 			}
 		} else {
 			$this->tag ( $this->showOccupationName($occupation), 'td', 
-					$this->reservationClass($occupation->reservation_type, $start_time) )->nl();
+					$this->cls($this->reservationClass($occupation->reservation_type, $start_time) . ' ' . $this->days($day)))->nl();
 		}
 	}
 	
@@ -176,10 +176,10 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	 * @param object $id_reservable
 	 * @return 
 	 */
-	private function showAvailable($datetime,$id_reservable) {
+	private function showAvailable($day, $datetime,$id_reservable) {
 		// user not logged in? -> no link available
 		if ($this->user->id == 0) {
-			return $this->tag ( '&nbsp', 'td', $this->reservationClass(0, $datetime) );
+			return $this->tag ( '&nbsp', 'td', $this->cls($this->reservationClass(0, $datetime) .' ' . $this->days($day)) );
 		}
 		// create link to new reservation
 		$link = new JUri(JRoute::_('index.php?option=com_easyreservation&view=newReservation'));
@@ -187,7 +187,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		$link->setVar('start_date',date('d.m.Y',$datetime));
 		$link->setVar('start_time',date('H',$datetime));
 		
-		$this->msg('<td ' . $this->reservationClass(0, $datetime) . '>');
+		$this->msg('<td ' . $this->cls($this->reservationClass(0, $datetime) . ' ' . $this->days($day)) . '>');
 		// use inner <div> tag to show the link in all available space
 		$this->tag('<div style="height:100%;width:100%">&nbsp;</div>', 'a', "href='$link'");
 		$this->msg('</td>')->nl();		
@@ -218,8 +218,18 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		}
 	}
 	
+	private function cls ($value) {
+		if (is_array($value)) {
+			return " class='" . join (' ',$value) . "' ";
+		} else {
+			return " class='$value' ";
+		}
+	}
+	private function days($days) {
+		return " days$days ";
+	}
 	private function reservationClass($type,$datetime) {
-		return "class='type$type" . $this->weekend($datetime) . "'";
+		return " type$type" . $this->weekend($datetime) . ' ';
 	}
 	
 	private function weekend($datetime) {
