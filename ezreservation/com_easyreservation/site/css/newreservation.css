@@ -1,8 +1,13 @@
 @CHARSET "ISO-8859-1";
 
-
+/*
+ * layout of the new reservation form
+ */
+ 
+ /* horizontal align of all input fields */ 
 label {
   text-align: right;
+  vertical-align:center;
   width: 50%;
   left: 0;
   right: 1em;

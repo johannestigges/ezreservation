@@ -57,6 +57,36 @@ class EasyReservationTableReservation extends JTable {
 			JErrorPage::render ( $e );
 		}
 	}
+
+	/**
+	 * delete a reservation, and all occupations
+	 * @param unknown $id
+	 */
+	public function deleteReservation($id) {
+		$db = JFactory::getDbo ();
+		
+		try {
+			$now = date ( 'Y-m-d H:i:s' );
+			$user_id = JFactory::getUser ()->id;
+				
+			$db->transactionStart ();
+				
+			$db->setQuery ( "delete from #__ezr_occupation where id_reservation = $id" );
+			$db->execute ();
+				
+			$db->setQuery ( "delete from #__ezr_reservation where id = $id" );
+			$db->execute ();
+				
+			$db->setQuery ( "insert into #__ezr_protocol (id_reservation,created,user_id,description) values($id,'$now',$user_id,'reservation deleted')" );
+			$db->execute ();
+				
+			echo "reservation $id deleted.";
+			$db->transactionCommit ();
+		} catch ( Exception $e ) {
+			$db->transactionRollback ();
+			JErrorPage::render ( $e );
+		}
+	}
 	
 	/**
 	 * insert a reservation

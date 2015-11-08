@@ -52,7 +52,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 					$this->printOccupation ( $i, $time, $reservable->id );
 				}
 			}
-			$this->msg ( '</tr>' );
+			$this->msg ( '</tr>' )->nl();
 		}
 		$this->msg ( '</tbody></table>' )->nl ();
 		
@@ -90,6 +90,7 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		$this->msg ( '>' )->msg ( $content )->msg ( "</$tag>" );
 		return $this;
 	}
+	
 	private function msg($content) {
 		$this->msg .= $content;
 		return $this;
@@ -117,7 +118,8 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	}
 
 	private function isInTimeRange($start_time, $end_time, $occupation) {
-		return (strtotime ( $occupation->start_time ) < $end_time and strtotime ( $occupation->end_time ) > $start_time);
+		return (strtotime ( $occupation->start_time ) < $end_time and 
+				strtotime ( $occupation->end_time )   > $start_time);
 	}
 	
 	/**
@@ -146,12 +148,13 @@ class EasyReservationViewOccupation extends JViewLegacy {
 	 */
 	private function showOccupation ($day, $start_time, $occupation) {
 		// if the duration of the occupation is more than one timeslot,
-		// user 'rowspan' to show the occupation block.
+		// use 'rowspan' to show the occupation block.
 		$duration = $this->getDuration($occupation);
 		if ($duration > 1) {
 			if ($start_time == strtotime($occupation->start_time)) {
 				$this->tag ( $this->showOccupationName($occupation), 'td', 
-						" rowspan='$duration'" . $this->cls($this->reservationClass($occupation->reservation_type, $start_time).' '.$this->days($day)))->nl();
+						" rowspan='$duration'" . 
+						$this->cls($this->reservationClass($occupation->reservation_type, $start_time).' '.$this->days($day)))->nl();
 			} else {
 				// show nothing!
 			}

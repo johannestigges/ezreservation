@@ -19,12 +19,17 @@ class EasyReservationViewReservations extends JViewLegacy {
 			$JFactory::getApplication()->redirect(JUri::current());
 			return;
 		}
+		$model = $this->getModel();
 		
 		$this->cancel(JFactory::getApplication()->input->get('cancel'));
-		
+		$this->delete(JFactory::getApplication()->input->get('delete'));
+	
 		$this->msg = '<h1>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS ) . "</h1>\n";
 		
 		$this->msg .= '<table style="border-collapse: separate; border-spacing:20px;"><thead><tr>';
+		if ($model->isAdmin()) {
+			$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_ID ) . '</th>');
+		}
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_RESERVABLE ) . '</th>');
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_TYPE ) . '</th>');
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_DATE ) . '</th>');
@@ -35,16 +40,19 @@ class EasyReservationViewReservations extends JViewLegacy {
 		}
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_STATUS ) . '</th>' );
 		$this->msg .= ('<th>&nbsp;</th>' );
+		$this->msg .= ('<th>&nbsp;</th>' );
 		$this->msg .= "</tr></thead><tbody>\n";
-		
 		foreach ( $this->get ( 'MyReservations' ) as $reservation ) {
 			$this->msg .= '<tr>';
+			if ($model->isAdmin()) {
+				$this->msg .= ('<td>' . $reservation->id . '</td>');
+			}
 			$this->msg .= ('<td>' . $reservation->id_reservable . '</td>');
 			$this->msg .= ('<td>' . JText::_('COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE'.$reservation->reservation_type). '</td>');
 			$this->msg .= ('<td>' . $this->date($reservation->start_time) . '</td>');
 			$this->msg .= ('<td>' . $this->time($reservation->start_time) . ' - ' . $this->time($reservation->end_time) . '</td>');
 			$this->msg .= ('<td>' . $reservation->created . '</td>');
-			if ($user->authorise('core.admin')) {
+			if ($model->isAdmin()) {
 				$this->msg .= '<td>'. JFactory::getUser($reservation->user_id)->name . '</td>';
 			}
 			if ($reservation->status == 1) {
@@ -52,13 +60,21 @@ class EasyReservationViewReservations extends JViewLegacy {
 			} else {
 				$this->msg .= '<td>'. JText::_(COM_EASYRESERVATION_RESERVATIONS_RESERVED) .'</td>';
 			}
-			if ($this->canCancel($reservation)) {
+			if ($model->canCancel($reservation->id)) {
 				$this->msg .= '<td>';
 				$this->showLinkCancel($reservation->id);
 				$this->msg .= '</td>';
 			} else {
 				$this->msg .= '<td>&nbsp;</td>';
 			}
+			if ($model->isAdmin()) {
+				$this->msg .= '<td>';
+				$this->showLinkDelete($reservation->id);
+				$this->msg .= '</td>';
+			} else {
+				$this->msg .= '<td>&nbsp;</td>';
+			}
+			
 			$this->msg .= "</tr>\n";
 		}
 		$this->msg .= "</tbody></table>\n";
@@ -87,8 +103,13 @@ class EasyReservationViewReservations extends JViewLegacy {
 	}
 	private function cancel ($id) {
 		if ($id > 0) {
-			$model = $this->getModel();
-			return $model->cancelReservation($id);
+			return $this->getModel()->cancelReservation($id);
+		}
+		return false;
+	}
+	private function delete ($id) {
+		if ($id > 0) {
+			return $this->getModel()->deleteReservation($id);
 		}
 		return false;
 	}
@@ -96,10 +117,20 @@ class EasyReservationViewReservations extends JViewLegacy {
 	private function showLinkCancel($id) {
 		$link = JFactory::getURI();
 		$link->setVar('cancel',$id);
-		$this->msg .= '<td><a href="' . $link->toString() . '"';
+		$this->msg .= '<a href="' . $link->toString() . '"';
 		$this->msg .= (' onclick="return confirm(\''. JText::_ (COM_EASYRESERVATION_CONFIRM_CANCEL) . '\');"');
 		$this->msg .= '>';
 		$this->msg .= JText::_ (COM_EASYRESERVATION_RESERVATIONS_CANCEL);
+		$this->msg .= '</a>';
+	}
+	
+	private function showLinkDelete($id) {
+		$link = JFactory::getURI();
+		$link->setVar('delete',$id);
+		$this->msg .= '<a href="' . $link->toString() . '"';
+		$this->msg .= (' onclick="return confirm(\''. JText::_ (COM_EASYRESERVATION_CONFIRM_DELETE) . '\');"');
+		$this->msg .= '>';
+		$this->msg .= JText::_ (COM_EASYRESERVATION_RESERVATIONS_DELETE);
 		$this->msg .= '</a>';
 	}
 }
