@@ -48,7 +48,7 @@ class EasyReservationTableReservation extends JTable {
 			$db->setQuery ( "update #__ezr_reservation set status = 1 where id = $id" );
 			$db->execute ();
 			
-			$db->setQuery ( "insert into #__ezr_protocol (id_reservation,created,user_id,description) values($id,'$now',$user_id,'reservation cancelled')" );
+			$db->setQuery ( "insert into #__ezr_protocol (id_reservation,created,user_id,description) values($id,'$now',$user_id,'reservation $id cancelled')" );
 			$db->execute ();
 			
 			$db->transactionCommit ();
@@ -77,10 +77,9 @@ class EasyReservationTableReservation extends JTable {
 			$db->setQuery ( "delete from #__ezr_reservation where id = $id" );
 			$db->execute ();
 				
-			$db->setQuery ( "insert into #__ezr_protocol (id_reservation,created,user_id,description) values($id,'$now',$user_id,'reservation deleted')" );
+			$db->setQuery ( "insert into #__ezr_protocol (id_reservation,created,user_id,description) values($id,'$now',$user_id,'reservation $id deleted')" );
 			$db->execute ();
 				
-			echo "reservation $id deleted.";
 			$db->transactionCommit ();
 		} catch ( Exception $e ) {
 			$db->transactionRollback ();

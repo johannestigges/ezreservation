@@ -100,7 +100,7 @@ class EasyReservationModelNewReservation extends JModelItem {
 			$protocol = array ();
 			$protocol ['id_reservation'] = $this->reservation ['id_reservation'];
 			$protocol ['user_id'] = JFactory::getUser ()->id;
-			$protocol ['description'] = 'created reservation with ' . count($this->occupations) . ' occupations';
+			$protocol ['description'] = 'created reservation '. $this->reservation['id_reservation'] . ' with ' . count($this->occupations) . ' occupations';
 			$this->table ( 'Protocol' )->insert ( $protocol );
 			
 			$db->transactionCommit ();

@@ -115,9 +115,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 	}
 	
 	private function showLinkCancel($id) {
-		$link = JFactory::getURI();
-		$link->setVar('cancel',$id);
-		$this->msg .= '<a href="' . $link->toString() . '"';
+		$this->msg .= '<a href="' . JFactory::getURI()->toString() . "&cancel=$id" . '"';
 		$this->msg .= (' onclick="return confirm(\''. JText::_ (COM_EASYRESERVATION_CONFIRM_CANCEL) . '\');"');
 		$this->msg .= '>';
 		$this->msg .= JText::_ (COM_EASYRESERVATION_RESERVATIONS_CANCEL);
@@ -125,9 +123,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 	}
 	
 	private function showLinkDelete($id) {
-		$link = JFactory::getURI();
-		$link->setVar('delete',$id);
-		$this->msg .= '<a href="' . $link->toString() . '"';
+		$this->msg .= '<a href="' . JFactory::getURI()->toString() . "&delete=$id" . '"';
 		$this->msg .= (' onclick="return confirm(\''. JText::_ (COM_EASYRESERVATION_CONFIRM_DELETE) . '\');"');
 		$this->msg .= '>';
 		$this->msg .= JText::_ (COM_EASYRESERVATION_RESERVATIONS_DELETE);
