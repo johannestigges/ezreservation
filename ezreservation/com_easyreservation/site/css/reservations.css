@@ -3,16 +3,7 @@ table.reservations {
 }
 
 @media(max-width:  765px) {	
-	.reservations th:nth-child(2) { 
-		display:none; 
-	}
-	.reservations td:nth-child(2) {
-			display:none; 
-	}
-	.reservations th:nth-child(5) {
-			display:none; 
-	}
-	.reservations td:nth-child(5) { 
+	table.reservations .optional { 
 		display:none; 
 	}
 }

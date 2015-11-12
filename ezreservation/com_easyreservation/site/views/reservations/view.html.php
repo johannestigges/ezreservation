@@ -28,15 +28,15 @@ class EasyReservationViewReservations extends JViewLegacy {
 		
 		$this->msg .= "<table class='reservations'>\n<thead><tr>";
 		if ($model->isAdmin()) {
-			$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_ID ) . '</th>');
+			$this->msg .= ('<th class="optional">' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_ID ) . '</th>');
 		}
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_RESERVABLE ) . '</th>');
-		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_TYPE ) . '</th>');
+		$this->msg .= ('<th class="optional">' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_TYPE ) . '</th>');
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_DATE ) . '</th>');
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_TIME ) . '</th>');
-		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_CREATED ) . '</th>');
+		$this->msg .= ('<th class="optional">' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_CREATED ) . '</th>');
 		if ($user->authorise('core.admin')) {
-			$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_USER ) . '</th>' );
+			$this->msg .= ('<th class="optional">' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_USER ) . '</th>' );
 		}
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_STATUS ) . '</th>' );
 		$this->msg .= ('<th>&nbsp;</th>' );
@@ -45,15 +45,15 @@ class EasyReservationViewReservations extends JViewLegacy {
 		foreach ( $this->get ( 'MyReservations' ) as $reservation ) {
 			$this->msg .= '<tr>';
 			if ($model->isAdmin()) {
-				$this->msg .= ('<td>' . $reservation->id . '</td>');
+				$this->msg .= ('<td class="optional">' . $reservation->id . '</td>');
 			}
 			$this->msg .= ('<td>' . $reservation->id_reservable . '</td>');
-			$this->msg .= ('<td>' . JText::_('COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE'.$reservation->reservation_type). '</td>');
+			$this->msg .= ('<td class="optional">' . JText::_('COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE'.$reservation->reservation_type). '</td>');
 			$this->msg .= ('<td>' . $this->date($reservation->start_time) . '</td>');
 			$this->msg .= ('<td>' . $this->time($reservation->start_time) . ' - ' . $this->time($reservation->end_time) . '</td>');
-			$this->msg .= ('<td>' . $reservation->created . '</td>');
+			$this->msg .= ('<td class="optional">' . $reservation->created . '</td>');
 			if ($model->isAdmin()) {
-				$this->msg .= '<td>'. JFactory::getUser($reservation->user_id)->name . '</td>';
+				$this->msg .= '<td class="optional">'. JFactory::getUser($reservation->user_id)->name . '</td>';
 			}
 			if ($reservation->status == 1) {
 				$this->msg .= ('<td>' . JText::_ (COM_EASYRESERVATION_RESERVATIONS_CANCELLED) . '</td>' );
