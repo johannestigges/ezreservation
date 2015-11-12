@@ -114,7 +114,7 @@ class EasyReservationModelNewReservation extends JModelItem {
 	}
 	
 	/**
-	 * check the reservation date
+	 * check the reservation data
 	 * @return boolean
 	 */
 	private function checkData() {

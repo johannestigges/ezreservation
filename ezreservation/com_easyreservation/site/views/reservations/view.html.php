@@ -26,7 +26,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 	
 		$this->msg = '<h1>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS ) . "</h1>\n";
 		
-		$this->msg .= '<table style="border-collapse: separate; border-spacing:20px;"><thead><tr>';
+		$this->msg .= "<table class='reservations'>\n<thead><tr>";
 		if ($model->isAdmin()) {
 			$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_ID ) . '</th>');
 		}
