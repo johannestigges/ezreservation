@@ -2,9 +2,11 @@
 // No direct access to this file
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
+// add css
 $csspath = JUri::base () . 'components/com_easyreservation/css/newreservation.css';
 $document = JFactory::getDocument ();
 $document->addStyleSheet ( $csspath );
+
 $user = JFactory::getUser();
 
 JHtml::calendar ( date('Y-m-d',strtotime($this->input_data['start_date'])), 'start_date', 'start_date', '%d.%m.%Y' );
@@ -78,11 +80,11 @@ echo $this->msg;
 	<label><?php echo JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_DURATION);?>  
 		<select name="duration">
 		<?php 
-		$i = 2;
+		$max_duration = 2;
 		if ($user->authorise('core.admin')) {
-			$i = 12;
+			$max_duration = 12;
 		}
-		foreach ( range ( 1, $i ) as $duration ) {
+		foreach ( range ( 1, $max_duration ) as $duration ) {
 			if ($duration == $this->input_data['duration']) {
 				echo "<option selected>$duration</option>";
 			} else {
