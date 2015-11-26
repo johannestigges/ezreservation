@@ -10,13 +10,11 @@ jimport ( 'joomla.application.component.modelitem' );
  */
 class EasyReservationModelNewReservation extends JModelItem {
 	/**
-	 *
 	 * @var array containing all input data
 	 */
 	private $input_data;
 	
 	/**
-	 *
 	 * @var array containing reservation data
 	 */
 	private $reservation;
@@ -26,7 +24,6 @@ class EasyReservationModelNewReservation extends JModelItem {
 	 */
 	private $occupations;
 
-	
 	/**
 	 * get all reservables
 	 */
