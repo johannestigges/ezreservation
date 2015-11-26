@@ -2,6 +2,7 @@ table.reservations {
 	border-collapse: separate; border-spacing:20px;
 }
 
+/* hide optional columns on small devices */
 @media(max-width:  765px) {	
 	table.reservations .optional { 
 		display:none; 
