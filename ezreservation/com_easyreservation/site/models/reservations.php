@@ -19,8 +19,8 @@ class EasyReservationModelReservations extends JModelItem {
 	
 	public function cancelReservation($id) {
 		if ($this->canCancel($id)) { 
-				$this->table()->cancelReservation($id);
-				return true;
+			$this->table()->cancelReservation($id);
+			return true;
 		}
 		return false;
 	}
