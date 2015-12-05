@@ -41,7 +41,7 @@ class EasyReservationModelReservations extends JModelItem {
 		$table = $this->table();
 		if ($table->load($id)) {
 			if ($table->id == $id and $table->status == 0) {
-				if ($this->isAdmin()) {
+				if ($this->isAuthor()) {
 					return true;
 				}
 				if (strtotime ($table->start_time) > strtotime ('+8 hours')) {
@@ -54,6 +54,10 @@ class EasyReservationModelReservations extends JModelItem {
 	
 	private function table($table='Reservation') {
 		return JTable::getInstance($table, 'EasyReservationTable');
+	}
+	
+	public function isAuthor() {
+		return JFactory::getUser()->authorise('core.create');
 	}
 	
 	public function isAdmin() {
