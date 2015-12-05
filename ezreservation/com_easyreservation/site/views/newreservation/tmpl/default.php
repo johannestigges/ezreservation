@@ -44,7 +44,7 @@ echo $this->msg;
 	</label> 
 	
 	<?php 
-	if ($user->authorise('core.admin')) { 
+	if ($user->authorise('core.create')) { 
 		echo '<label>' . JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE); 
 		echo '<select name="reservation_type">';
 		option(1, JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE1), $this->input_data['reservation_type']);
@@ -96,12 +96,14 @@ echo $this->msg;
 	</label>
 
 	
-	<?php if ($user->authorise('core.admin')) { ?>
+	<?php if ($user->authorise('core.create')) { ?>
 	<label><?php echo JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TEXT);?>  
 		<input type="text" id="reservation_name" name="reservation_name" 
 				value="<?php echo $this->input_data['reservation_name']; ?>" maxlength="50">
 	</label>
-		
+	<?php } ?>
+	
+	<?php if ($user->authorise('core.admin')) { ?>
 	<label><?php echo JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_ENDDAY);?>  
 		<input type="text" id="end_day" name="end_day" 
 				value="<?php echo $this->input_data['end_day']; ?>" maxlength="5">
