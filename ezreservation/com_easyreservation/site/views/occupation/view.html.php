@@ -167,11 +167,22 @@ class EasyReservationViewOccupation extends JViewLegacy {
 		}
 	}
 	private function showOccupationName($occupation) {
-		if ($this->user->id > 0) {
+		if ($this->canShowOccupationName()) {
 			return JText::_ ( "COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE" . $occupation->reservation_type ) . ' ' . $occupation->name;
 		} else {
 			return JText::_ ( "COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE" . $occupation->reservation_type );
 		}
+	}
+	
+	private function canShowOccupationName() {
+		if ($this->user->id > 0) {
+			return true;
+		}
+		$jinput = JFactory::getApplication ()->input;
+		if ($jinput->get('kiosk') == '46733902147') {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
