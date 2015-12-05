@@ -27,7 +27,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 		$this->msg = '<h1>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS ) . "</h1>\n";
 		
 		$this->msg .= "<table class='reservations'>\n<thead><tr>";
-		if ($model->isAdmin()) {
+		if ($user->authorise('core.admin')) {
 			$this->msg .= ('<th class="optional">' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_ID ) . '</th>');
 		}
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_RESERVABLE ) . '</th>');
@@ -44,7 +44,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 		$this->msg .= "</tr></thead><tbody>\n";
 		foreach ( $this->get ( 'MyReservations' ) as $reservation ) {
 			$this->msg .= '<tr>';
-			if ($model->isAdmin()) {
+			if ($user->authorise('core.admin')) {
 				$this->msg .= ('<td class="optional">' . $reservation->id . '</td>');
 			}
 			$this->msg .= ('<td>' . $reservation->id_reservable . '</td>');
@@ -52,7 +52,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 			$this->msg .= ('<td>' . $this->date($reservation->start_time) . '</td>');
 			$this->msg .= ('<td>' . $this->time($reservation->start_time) . ' - ' . $this->time($reservation->end_time) . '</td>');
 			$this->msg .= ('<td class="optional">' . $reservation->created . '</td>');
-			if ($model->isAdmin()) {
+			if ($user->authorise('core.admin')) {
 				$this->msg .= '<td class="optional">'. JFactory::getUser($reservation->user_id)->name . '</td>';
 			}
 			if ($reservation->status == 1) {
@@ -67,7 +67,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 			} else {
 				$this->msg .= '<td>&nbsp;</td>';
 			}
-			if ($model->isAdmin()) {
+			if ($user->authorise('core.admin')) {
 				$this->msg .= '<td>';
 				$this->showLinkDelete($reservation->id);
 				$this->msg .= '</td>';
@@ -97,10 +97,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 	private function time($d) {
 		return JFactory::getDate($d)->format ('H:i');
 	}
-	private function canCancel($reservation) {
-		return $reservation->status == 0 and 
-		strtotime($reservation->start_time) > strtotime ('+8 hours');
-	}
+
 	private function cancel ($id) {
 		if ($id > 0) {
 			return $this->getModel()->cancelReservation($id);
