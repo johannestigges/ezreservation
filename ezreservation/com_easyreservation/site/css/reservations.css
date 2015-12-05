@@ -1,3 +1,6 @@
+/**
+ * layout of the 'my reservations' list
+ */
 table.reservations {
 	border-collapse: separate; border-spacing:20px;
 }
