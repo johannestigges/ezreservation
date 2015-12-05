@@ -1,5 +1,4 @@
 <?php
-
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 class EasyReservationTableProtocol extends JTable {
 	/**
@@ -31,7 +30,7 @@ class EasyReservationTableProtocol extends JTable {
 			);
 			$values = array (
 					$db->quote ( $data ['id_reservation'] ),
-					$db->quote ( date ('Y-m-d H:i:s') ),
+					$db->quote ( date ( 'Y-m-d H:i:s' ) ),
 					$db->quote ( $data ['user_id'] ),
 					$db->quote ( $data ['description'] ) 
 			);
