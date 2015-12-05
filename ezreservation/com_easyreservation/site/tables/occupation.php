@@ -1,6 +1,5 @@
  <?php
 	defined ( '_JEXEC' ) or die ( 'Restricted access' );
-	
 	class EasyReservationTableOccupation extends JTable {
 		
 		/**
@@ -10,9 +9,19 @@
 		 *        	object Database connector object
 		 */
 		function __construct(&$db) {
-			parent::__construct ( '#__ezr_occupation', [ 'id_reservable', 'start_time'], $db );
+			parent::__construct ( '#__ezr_occupation', [ 
+					'id_reservable',
+					'start_time' 
+			], $db );
 		}
 		
+		/**
+		 * select all occupations in a given time interval
+		 *
+		 * @param unknown $start_time        	
+		 * @param unknown $end_time        	
+		 * @param number $id_reservable        	
+		 */
 		public function getOccupations($start_time, $end_time, $id_reservable = 0) {
 			$db = $this->_db;
 			$query = $db->getQuery ( true );
@@ -34,6 +43,11 @@
 			return $db->loadObjectList ();
 		}
 		
+		/**
+		 * insert an occupation
+		 *
+		 * @param unknown $data        	
+		 */
 		public function insert($data) {
 			$db = $this->_db;
 			$columns = array (
@@ -57,8 +71,8 @@
 			$db->setQuery ( $query );
 			$db->execute ();
 		}
-
 		private function quoteDate($date) {
-			return $this->_db->quote ( date ('Y-m-d H:i:s', $date));
+			return $this->_db->quote ( date ( 'Y-m-d H:i:s', $date ) );
 		}
-	}	
+	}
+	?>
