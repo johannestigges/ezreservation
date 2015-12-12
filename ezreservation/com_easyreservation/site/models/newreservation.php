@@ -119,7 +119,7 @@ class EasyReservationModelNewReservation extends JModelItem {
 		
 		// check date not too far in future
 		if (strtotime ( '+ 14 days' ) < $this->reservation ['start_time'] and 
-				$user->authorise('core.admin') == false) {
+				$user->authorise('core.create') == false) {
 			JFactory::getApplication ()->enqueueMessage ( 
 					JText::_ ( COM_EASYRESERVATION_OCCUPATION_TOO_FAR_IN_FUTURE ), 'warning' );
 			return false;
