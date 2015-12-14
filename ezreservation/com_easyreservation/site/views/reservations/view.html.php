@@ -37,6 +37,7 @@ class EasyReservationViewReservations extends JViewLegacy {
 		$this->msg .= ('<th class="optional">' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_CREATED ) . '</th>');
 		if ($user->authorise('core.admin')) {
 			$this->msg .= ('<th class="optional">' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_USER ) . '</th>' );
+			$this->msg .= ('<th class="optional">' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_NAME ) . '</th>' );
 		}
 		$this->msg .= ('<th>' . JText::_ ( COM_EASYRESERVATION_RESERVATIONS_STATUS ) . '</th>' );
 		$this->msg .= ('<th>&nbsp;</th>' );
@@ -53,7 +54,8 @@ class EasyReservationViewReservations extends JViewLegacy {
 			$this->msg .= ('<td>' . $this->time($reservation->start_time) . ' - ' . $this->time($reservation->end_time) . '</td>');
 			$this->msg .= ('<td class="optional">' . $reservation->created . '</td>');
 			if ($user->authorise('core.admin')) {
-				$this->msg .= '<td class="optional">'. JFactory::getUser($reservation->user_id)->name . '</td>';
+				$this->msg .= '<td class="optional">' . JFactory::getUser($reservation->user_id)->name . '</td>';
+				$this->msg .= '<td class="optional">' . $reservation->name . '</td>';
 			}
 			if ($reservation->status == 1) {
 				$this->msg .= ('<td>' . JText::_ (COM_EASYRESERVATION_RESERVATIONS_CANCELLED) . '</td>' );
