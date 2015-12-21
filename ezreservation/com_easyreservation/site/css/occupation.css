@@ -22,12 +22,14 @@ table.occupation_table td {
 .type2 { background-color: #d5d5f5; }
 .type3 { background-color: #d0f0d0; }
 .type4 { background-color: #c9e9e9; }
+.type5 { background-color: #c0e0c0; }
 /* use different background colors for weekend */
 .type0_weekend { background-color: #c9c9c9;}
 .type1_weekend { background-color: #f5d68b; }
 .type2_weekend { background-color: #b9b9c9; }
 .type3_weekend { background-color: #bacaba; }
 .type4_weekend { background-color: #b0d0d0; }
+.type5_weekend { background-color: #b0c0b0; }
 
 /* responsive design: hide columns if display width is too small */
 @media(max-width:  500px) {	.days1         { display:none; }}
