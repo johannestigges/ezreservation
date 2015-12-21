@@ -51,6 +51,7 @@ echo $this->msg;
 		option(2, JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE2), $this->input_data['reservation_type']);
 		option(3, JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE3), $this->input_data['reservation_type']);
 		option(4, JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE4), $this->input_data['reservation_type']);
+		option(5, JText::_(COM_EASYRESERVATION_NEW_RESERVATION_LABEL_TYPE5), $this->input_data['reservation_type']);
 		echo '</select>';
 		echo '</label>'; 
 	} else {
