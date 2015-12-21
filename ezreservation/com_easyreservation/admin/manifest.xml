@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.0.0" method="upgrade">
+	<name>Easy Reservation</name>
+	<creationDate>September 2015</creationDate>
+	<author>Johannes Tigges</author>
+	<authorEmail>johannes.tigges@freenet.de</authorEmail>
+	<copyright>Copyright Info</copyright>
+	<license>License Info</license>
+	<version>0.1.0</version>
+	<description>
+The purpose of this joomla module ist to provide an easy to use reservation system.
+To make a reservation, a user must be logged into the joomla. 
+	</description>
+
+	<administration>
+	
+		<menu link="option=com_easyreservation"">Easy Reservation</menu>
+		
+		<files folder="admin">
+			<filename>easyreservation.php</filename>
+			<folder>language</folder>
+		</files>  
+
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB.com_easyreservation.ini</language>
+			<language tag="en-GB">language/en-GB.com_easyreservation.sys.ini</language>
+			<language tag="de-DE">language/de-DE.com_easyreservation.ini</language>
+			<language tag="de-DE">language/de-DE.com_easyreservation.sys.ini</language>
+		</languages>
+
+	</administration>
+	
+</extension>

@@ -49,11 +49,12 @@ To make a reservation, a user must be logged into the joomla.
 			<filename>install.sql</filename>
 			<filename>uninstall.sql</filename>
 			<filename>easyreservation.php</filename>
+			<folder>language</folder>
 		</files>  
 
-		<languages>
-			<language tag="en-GB">languages/admin/en-GB.com_easyreservation.sys.ini</language>
-			<language tag="de-DE">languages/admin/de-DE.com_easyreservation.sys.ini</language>
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB.com_easyreservation.ini</language>
+			<language tag="de-DE">language/de-DE.com_easyreservation.ini</language>
 		</languages>
 
 	</administration>
